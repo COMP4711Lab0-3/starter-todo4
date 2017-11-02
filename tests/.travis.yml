@@ -1,0 +1,9 @@
+language: php
+php:
+ - 7.0
+
+ before_script:
+  - curl -s https://getcomposer.org/installer | php
+  - php composer.phar install --dev
+
+script: vendor/bin/phpunit tests/MY_Model_test.php
