@@ -1,16 +1,22 @@
 <?php
- class TaskTest extends PHPUnit_Framework_TestCase
-  {
+
+if (! class_exists('PHPUnit_Framework_TestCase')) {
+    class_alias('PHPUnit\Framework\TestCase', 'PHPUnit_Framework_TestCase');
+}
+
+class TaskTest extends PHPUnit_Framework_TestCase {
+
     private $CI;
-    public function setUp()
-    {
+    private $task;
+
+    public function setUp() {
       // Load CI instance normally
       $this->CI = &get_instance();
+      $this->task = new Task;
     }
-    public function testGetPost()
-    {
-      $_SERVER['REQUEST_METHOD'] = 'GET';
-      $_GET['foo'] = 'bar';
-      $this->assertEquals('bar', $this->CI->input->get_post('foo'));
+
+    public function testTaskCreation() {
+      $this->task->task = "task Creation";
+      assertNotEquals("taskCreation", $task->task);
     }
-  }
+}

@@ -21,3 +21,5 @@ Repo: https://github.com/COMP4711Lab0-3/starter-todo4
 * added checkboxes on the page to mark completion
 
 * added task item maintenance (add, edit, showit, submit, cancel, delete functions) w/ item edit page
+
+* unit testing with phpunit
