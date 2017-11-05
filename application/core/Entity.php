@@ -1,6 +1,6 @@
 <?php
 
-class Task extends CI_Model {
+class Entity extends CI_Model {
 
     // If this class has a setProp method, use it, else modify the property directly
     public function __set($key, $value) {
@@ -18,5 +18,17 @@ class Task extends CI_Model {
         // Otherwise, just set the property value directly.
         $this->$key = $value;
         return $this;
+    }
+
+    public function __get($key) {
+        $method = 'get' . str_replace(' ', '', ucwords(str_replace(['-', '_'], ' ', $key)));
+        if (method_exists($this, $method))
+        {
+                $this->$method();
+                return $this;
+        }
+
+        // Otherwise, just set the property value directly.
+        return null;
     }
 }
