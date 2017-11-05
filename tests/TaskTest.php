@@ -19,7 +19,7 @@ class TaskTest extends PHPUnit_Framework_TestCase {
 
     public function testTaskMaxLength65(){
       $value = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
-      $this->task->task = $value;
+      $this->task->setTask($value);
       $this->assertNotEquals($value, $this->task->task);
     }
 
