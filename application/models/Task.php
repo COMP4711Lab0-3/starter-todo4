@@ -10,7 +10,7 @@ class Task extends Entity {
     public $group;
 
     public function setTask($value) {
-        if ((bool) preg_match('/^[A-Z0-9 ]+$/i', $value) && 64 >= mb_strlen($value)) {
+        if (!is_int($value) && (bool) preg_match('/^[A-Z0-9 ]+$/i', $value) && 64 >= mb_strlen($value) && !empty($value)) {
             $this->task = $value;
         }
     }
