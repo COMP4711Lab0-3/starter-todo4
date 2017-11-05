@@ -15,17 +15,17 @@ class Task extends Entity {
         }
     }
     public function setPriority($value) {
-        if (is_int($value) && 0 < $value && $value < 4) {
+        if (is_int($value) && 0 < $value && $value < 5) {
             $this->priority = $value;
         }
     }
     public function setSize($value) {
-        if (is_int($value) && 0 < $value && $value < 4) {
+        if (is_int($value) && 0 < $value && $value < 5) {
             $this->size = $value;
         }
     }
     public function setGroup($value) {
-        if (is_int($value) && 0 < $value && $value < 5) {
+        if (is_int($value) && 0 < $value && $value < 6) {
             $this->group = $value;    
         }
     }
