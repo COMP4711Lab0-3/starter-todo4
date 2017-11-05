@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<phpunit
-    colors="true"
+<phpunit colors="true"
     stopOnFailure="false"
     backupGlobals="false"
     backupStaticAttributes="false"
@@ -18,9 +17,6 @@
             <directory>./tests/</directory>
         </testsuite>
     </testsuites>
-    <logging>
-        <log type="testdox-html" target="./tests/reports/testLog.html">
-    </logging>
     <filter>
         <whitelist>
             <directory>./system/</directory>
