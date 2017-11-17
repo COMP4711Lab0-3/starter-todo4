@@ -1,13 +1,14 @@
+
 <?php
 
 /**
- * CSV-persisted collection.
+ * XML-persisted collection.
  * 
  * @author		JLP
  * @copyright           Copyright (c) 2010-2017, James L. Parry
  * ------------------------------------------------------------------------
  */
-class CSV_Model extends Memory_Model
+class XML_Model extends Memory_Model
 {
 //---------------------------------------------------------------------------
 //  Housekeeping methods
@@ -15,7 +16,7 @@ class CSV_Model extends Memory_Model
 
 	/**
 	 * Constructor.
-	 * @param string $origin Filename of the CSV file
+	 * @param string $origin Filename of the XML file
 	 * @param string $keyfield  Name of the primary key field
 	 * @param string $entity	Entity name meaningful to the persistence
 	 */
@@ -37,7 +38,8 @@ class CSV_Model extends Memory_Model
 		$this->_data = array(); // an array of objects
 		$this->fields = array(); // an array of strings
 		// and populate the collection
-		$this->load();
+        $this->load();
+        $this->store();
 	}
 
 	/**
@@ -46,29 +48,16 @@ class CSV_Model extends Memory_Model
 	 */
 	protected function load()
 	{
-		//---------------------
-		if (($handle = fopen($this->_origin, "r")) !== FALSE)
+        //---------------------
+		if (($handle = simplexml_load_file($this->_origin)) !== FALSE)
 		{
-			$first = true;
-			while (($data = fgetcsv($handle)) !== FALSE)
-			{
-				if ($first)
-				{
-					// populate field names from first row
-					$this->_fields = $data;
-					$first = false;
-				}
-				else
-				{
-					// build object from a row
-					$record = new stdClass();
-					for ($i = 0; $i < count($this->_fields); $i ++ )
-						$record->{$this->_fields[$i]} = $data[$i];
-					$key = $record->{$this->_keyfield};
-					$this->_data[$key] = $record;
-				}
-			}
-			fclose($handle);
+            $this->_fields = array("id","task","priority","size","group","deadline", "status","flag");
+            foreach($handle as $item){
+                $record = new stdClass();
+                for ($i = 0; $i < count($this->_fields); $i ++ )
+                    $record->{$this->_fields[$i]} = (string)$item[$this->_fields[$i]];
+                $this->_data[$record->id] = $record;
+            }
 		}
 		// --------------------
 		// rebuild the keys table
@@ -84,12 +73,24 @@ class CSV_Model extends Memory_Model
 		// rebuild the keys table
 		$this->reindex();
 		//---------------------
-		if (($handle = fopen($this->_origin, "w")) !== FALSE)
+		if (($handle = fopen($this->_origin, "r")) !== FALSE)
 		{
-			fputcsv($handle, $this->_fields);
-			foreach ($this->_data as $key => $record)
-				fputcsv($handle, array_values((array) $record));
-			fclose($handle);
+            $tasksTag = new SimpleXMLElement("<tasks></tasks>");
+            foreach($this->_data as $key => $record){
+                $taskTag = $tasksTag->addChild("task");
+                foreach($this -> _fields as $value){
+                    $taskTag->addAttribute($value, $record->$value);
+                }
+            }
+            /*
+            $newsXML->addAttribute('newsPagePrefix', 'value goes here');
+            $newsIntro = $newsXML->addChild('content');
+            $newsIntro->addAttribute('type', 'latest');
+            Header('Content-type: text/xml');
+            echo $newsXML->asXML();*/
+
+            $tasksTag -> asXML ($this -> _origin);
+            
 		}
 		// --------------------
 	}
