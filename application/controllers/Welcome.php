@@ -20,7 +20,6 @@ class Welcome extends Application
 	public function index()
 	{
 		$tasks = $this->tasks->all();   // get all the tasks
-		
 		// count how many are not done
 		$count = 0;
 		foreach($tasks as $task) {
